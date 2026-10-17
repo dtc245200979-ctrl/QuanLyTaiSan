@@ -1,0 +1,4 @@
+
+Flask
+psycopg[binary]
+prometheus-flask-exporter
