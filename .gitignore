@@ -1,0 +1,21 @@
+
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# HTTPS certificates and private keys
+certs/
+
+# Local pgAdmin database and backups
+pgadmin4-backup.db
+*.db
+
+# Python cache and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
