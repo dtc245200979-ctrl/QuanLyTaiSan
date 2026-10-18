@@ -1,4 +1,4 @@
-
+﻿
 services:
   database:
     image: postgres:16
@@ -79,6 +79,31 @@ services:
     networks:
       - qlts_network
 
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: qlts_postgres_exporter
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}?sslmode=disable"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - qlts_network
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: qlts_cadvisor
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+    networks:
+      - qlts_network
   prometheus:
     image: prom/prometheus:latest
     container_name: qlts_prometheus
@@ -110,7 +135,7 @@ services:
       - qlts_network
 
   loki:
-    image: grafana/loki:3.5.0
+    image: grafana/loki:3.5.6
     container_name: qlts_loki
     restart: unless-stopped
     command:
@@ -152,3 +177,5 @@ volumes:
 networks:
   qlts_network:
     driver: bridge
+
+

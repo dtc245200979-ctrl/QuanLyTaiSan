@@ -19,3 +19,8 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+
+# Local backups and configuration backup files
+backups/
+*.bak
+*.bak_*
